@@ -1,96 +1,50 @@
 ﻿using System.Reflection;
 using System;
+using System.Xml.Linq;
+using System.Collections;
+using System.Text;
+using System.Numerics;
+using System.Collections.Generic;
+using System.Security.Cryptography;
+using System.ComponentModel;
+using System.Globalization;
+using System.Linq;
 
 namespace Two_sum
 {
     internal class Program
     {
-        static void Main(string[] args)
+        public static void Main(string[] args)
         {
-            ListNode listNode1 = new ListNode(23)
-            {
-                next = new ListNode(42)
-                {
-                    next = new ListNode(44)
-                    {
-                        next = new ListNode(44)
-                        {
-
-                        }
-                    }
-                }
-            };
-            ListNode listNode2 = new ListNode(1)
-            {
-                next = new ListNode(11)
-                {
-                    next = new ListNode(23)
-                    {
-                        next = new ListNode(42)
-                        {
-
-                        }
-                    }
-                }
-
-            };
-            ListNode res = MergeTwoLists(listNode1, listNode2);
-
-
-            int a = 2;
+            WordPattern("abba", "dog cat cat dog");
         }
-        public static ListNode? MergeTwoLists(ListNode list1, ListNode list2)
+        static public char WordPattern(string s, string t)
         {
-            if (list1 == null) return list2 == null ? null : list2;
-            else if (list2 == null) return list1;
-
-            ListNode temp;
-            ListNode small = list1.val <= list2.val ? list1 : list2;
-            ListNode newSeq = small;
-            ListNode big = small == list1 ? list2 : list1;
-
-            while (small.next != null && big.next != null)
+            Dictionary<char, int> dict = new();
+            foreach (char c in s)
             {
-                if (small.next.val <= big.val)
-                {
-                    small = small.next;
-                    continue;
-                }
-                temp = small.next;
-                small.next = big;
-                small = small.next;
-                big = temp;
+                if (!dict.TryAdd(c, 1))
+                    dict[c]++;
             }
-            if (small.next == null) small.next = big;
-            else if (big.next == null)
+            foreach (char c in t)
             {
-                while (small.next != null)
-                {
-                    if (small.next.val <= big.val)
-                    {
-                        small = small.next;
-                        continue;
-                    }
-                    temp = small.next;
-                    small.next = big;
-                    small = small.next;
-                    big = temp;
-                }
-                small.next = big;
+                if (!dict.ContainsKey(c) || (dict.TryGetValue(c, out int val) && val == 0))
+                    return c;
+                dict[c]--;
             }
-            return newSeq;
+            return 's';
         }
-
-
-        public class ListNode
+    }
+    public class TreeNode
+    {
+        public int val;
+        public TreeNode left;
+        public TreeNode right;
+        public TreeNode(int val = 0, TreeNode left = null, TreeNode right = null)
         {
-            public int val;
-            public ListNode next;
-            public ListNode(int val = 0, ListNode next = null)
-            {
-                this.val = val;
-                this.next = next;
-            }
+            this.val = val;
+            this.left = left;
+            this.right = right;
         }
     }
 }
